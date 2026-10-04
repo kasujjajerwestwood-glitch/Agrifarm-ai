@@ -1,0 +1,6 @@
+{
+  "name": "AGRIFARM AI ASSISTANT MANAGER",
+  "description": "Smart Farming. Better Decisions. Healthier Crops. AI-powered crop health monitoring, multi-angle plant scanner, digital farm management, and agricultural assistant.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

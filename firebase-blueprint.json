@@ -1,0 +1,174 @@
+{
+  "entities": {
+    "user": {
+      "title": "UserProfile",
+      "description": "Private farmer user profile document containing contact details and agricultural credentials",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "avatarUrl": { "type": "string" },
+        "country": { "type": "string" },
+        "district": { "type": "string" },
+        "preferredLanguage": { "type": "string", "enum": ["en", "lg", "sw"] },
+        "farmName": { "type": "string" },
+        "farmerType": { "type": "string" },
+        "role": { "type": "string", "enum": ["farmer", "admin"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "email", "country", "district", "farmName", "farmerType"]
+    },
+    "farm": {
+      "title": "Farm",
+      "description": "Farm entity representing physical acreage, farm type, and coordinates",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "location": { "type": "string" },
+        "district": { "type": "string" },
+        "sizeHectares": { "type": "number" },
+        "farmType": { "type": "string" },
+        "description": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "name", "district", "farmType"]
+    },
+    "field": {
+      "title": "Field",
+      "description": "Specific parcel, plot, or greenhouse block inside a farm",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "farmId": { "type": "string" },
+        "name": { "type": "string" },
+        "sizeHectares": { "type": "number" },
+        "cropName": { "type": "string" },
+        "soilType": { "type": "string" },
+        "irrigationMethod": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["id", "userId", "farmId", "name"]
+    },
+    "crop": {
+      "title": "Crop",
+      "description": "Plant or crop variety currently planted in a field",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "farmId": { "type": "string" },
+        "fieldId": { "type": "string" },
+        "fieldName": { "type": "string" },
+        "name": { "type": "string" },
+        "variety": { "type": "string" },
+        "growthStage": { "type": "string" },
+        "currentHealth": { "type": "string" }
+      },
+      "required": ["id", "userId", "name", "growthStage"]
+    },
+    "plantScan": {
+      "title": "PlantScan",
+      "description": "AI multimodal vision scan result with disease diagnosis and recommendations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "cropId": { "type": "string" },
+        "cropName": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "analysis": { "type": "object" }
+      },
+      "required": ["id", "userId", "cropName", "timestamp"]
+    },
+    "farmActivity": {
+      "title": "FarmActivity",
+      "description": "Farm operation log entry such as planting, spraying, weeding, or irrigation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "type": { "type": "string" },
+        "cropName": { "type": "string" },
+        "fieldName": { "type": "string" },
+        "date": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "required": ["id", "userId", "type", "date"]
+    },
+    "alert": {
+      "title": "SmartAlert",
+      "description": "Automated advisory or warning for pest, disease, or extreme weather",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "farmId": { "type": "string" },
+        "type": { "type": "string" },
+        "category": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "date": { "type": "string" },
+        "isRead": { "type": "boolean" }
+      },
+      "required": ["id", "userId", "title", "message", "date"]
+    },
+    "sensorReading": {
+      "title": "SensorReading",
+      "description": "Telemetry data from physical or simulated soil and environmental sensors",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "type": { "type": "string" },
+        "name": { "type": "string" },
+        "value": { "type": "number" },
+        "unit": { "type": "string" },
+        "status": { "type": "string" },
+        "lastUpdated": { "type": "string" }
+      },
+      "required": ["id", "userId", "type", "name", "value"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "user",
+      "description": "Individual farmer profile. Private, accessible only by the authenticated owner UID or admin."
+    },
+    "/farms/{farmId}": {
+      "schema": "farm",
+      "description": "Farm entities owned and managed by authenticated users."
+    },
+    "/fields/{fieldId}": {
+      "schema": "field",
+      "description": "Farm fields and plots, scoped by user ID."
+    },
+    "/crops/{cropId}": {
+      "schema": "crop",
+      "description": "Crop varieties and plantings, scoped by user ID."
+    },
+    "/plantScans/{scanId}": {
+      "schema": "plantScan",
+      "description": "Multimodal plant health scans and AI vision diagnoses, scoped by user ID."
+    },
+    "/farmActivities/{activityId}": {
+      "schema": "farmActivity",
+      "description": "Farm activities and labor records, scoped by user ID."
+    },
+    "/alerts/{alertId}": {
+      "schema": "alert",
+      "description": "Smart agricultural alerts, scoped by user ID."
+    },
+    "/sensorReadings/{sensorId}": {
+      "schema": "sensorReading",
+      "description": "Soil and microclimate sensor readings, scoped by user ID."
+    }
+  }
+}
