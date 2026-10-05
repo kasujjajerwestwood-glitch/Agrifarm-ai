@@ -3,8 +3,8 @@ import { Language } from '../types';
 export const translations = {
   en: {
     // Brand & Header
-    appTitle: 'AGRIFARM AI',
-    appSubtitle: 'Smart Farming. Better Decisions. Healthier Crops.',
+    appTitle: 'AGRIFARM UGANDA',
+    appSubtitle: 'Smart Farming for Uganda. Better Decisions. Healthier Crops.',
     managerBadge: 'Manager',
     online: 'Online',
     offline: 'Offline Mode',
@@ -201,8 +201,8 @@ export const translations = {
 
   lg: {
     // Brand & Header
-    appTitle: 'AGRIFARM AI',
-    appSubtitle: 'Okulima Okwamagezi. Okusalawo Okulungi. Ebirime Ebiramu.',
+    appTitle: 'AGRIFARM UGANDA',
+    appSubtitle: 'Okulima Okwamagezi mu Uganda. Okusalawo Okulungi. Ebirime Ebiramu.',
     managerBadge: 'Omuddukanya',
     online: 'Ku Yintaneeti',
     offline: 'Tewali Yintaneeti',
@@ -307,7 +307,7 @@ export const translations = {
     groundingSources: 'Ebitongole by’Ebyobulimi ebiwagira bino (NARO, CABI, FAO)',
     consultAIOnScan: 'Buuza Omukugu wa AI ku Kuno',
     saveToHistory: 'Kuuma Alipoota mu Biwandiiko',
-    disclaimerNotice: 'AI eya Agrifarm AI eyambako mu kusalawo. Bw’oba olina obulwadde obw’amanyi, buuza omulambuzi w’ebyobulimi (Extension Officer).',
+    disclaimerNotice: 'AI eya AgriFarm Uganda eyambako mu kusalawo. Bw’oba olina obulwadde obw’amanyi, buuza omulambuzi w’ebyobulimi (Extension Officer).',
 
     // AI Assistant
     chatHeaderTitle: 'Ekitebe ky’Omukugu wa AI mu Byobulimi',
@@ -399,8 +399,8 @@ export const translations = {
 
   sw: {
     // Brand & Header
-    appTitle: 'AGRIFARM AI',
-    appSubtitle: 'Kilimo Bora. Maamuzi Sahihi. Mazao Yenye Afya.',
+    appTitle: 'AGRIFARM UGANDA',
+    appSubtitle: 'Kilimo Bora cha Uganda. Maamuzi Sahihi. Mazao Yenye Afya.',
     managerBadge: 'Msimamizi',
     online: 'Iko Mtandaoni',
     offline: 'Hali ya Nje ya Mtandao',

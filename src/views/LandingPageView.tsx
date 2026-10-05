@@ -73,12 +73,13 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
             <span>Smart Farming. Better Decisions. Healthier Crops.</span>
           </div>
 
-          <h1 className="font-heading font-extrabold text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-tight">
-            AGRIFARM AI ASSISTANT MANAGER
+          <h1 className="font-heading font-extrabold text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-tight flex items-center space-x-3 flex-wrap">
+            <span>AGRIFARM UGANDA</span>
+            <span className="text-3xl sm:text-5xl">🇺🇬</span>
           </h1>
 
           <p className="text-emerald-100 text-base sm:text-xl font-normal leading-relaxed max-w-2xl">
-            AI-powered crop health monitoring and smart farm management designed for farmers, agricultural students, extension officers, and modern smart farms.
+            AI-powered crop health monitoring and smart farm management designed for Ugandan smallholder and commercial farmers, extension officers, and agricultural students.
           </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-4">
@@ -188,13 +189,13 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
             </p>
           </div>
 
-          {/* Feature 3: Agrifarm AI Assistant */}
+          {/* Feature 3: AgriFarm Uganda AI Assistant */}
           <div className="bg-white p-6 rounded-3xl border border-stone-200 shadow-xs space-y-3 hover:shadow-lg transition-all">
             <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center">
               <Sparkles className="w-6 h-6 text-emerald-700" />
             </div>
             <h3 className="font-heading font-bold text-lg text-stone-900">
-              Agrifarm AI Consultant
+              AgriFarm Uganda AI Agronomist
             </h3>
             <p className="text-xs text-stone-600 leading-relaxed">
               Ask deep questions about soil nutrition, compost tea recipes, spray intervals, and field troubleshooting. Attach images directly into the chat.

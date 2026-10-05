@@ -60,7 +60,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           : 'Disease & Pest Library',
       icon: BookOpen,
     },
-    { id: 'assistant', label: 'Agrifarm AI', icon: Sparkles },
+    { id: 'assistant', label: t(lang, 'aiAssistant'), icon: Sparkles },
     { id: 'fields', label: t(lang, 'fields'), icon: Layers },
     { id: 'activities', label: t(lang, 'activities'), icon: Activity },
     { id: 'history', label: t(lang, 'scanHistory'), icon: History },
@@ -89,11 +89,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div>
             <div className="flex items-center space-x-1.5">
               <span className="font-heading font-extrabold text-xl tracking-tight text-stone-900 dark:text-stone-100">
-                AGRIFARM <span className="text-emerald-700 dark:text-emerald-400">AI</span>
+                AGRIFARM <span className="text-emerald-700 dark:text-emerald-400">UGANDA</span>
               </span>
             </div>
             <p className="text-[11px] text-stone-500 dark:text-stone-400 font-medium leading-none mt-1">
-              Smart Farming · Healthier Crops
+              Smart Farming for Uganda 🇺🇬
             </p>
           </div>
         </div>

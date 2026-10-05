@@ -131,10 +131,10 @@ export const CameraPermissionModal: React.FC<CameraPermissionModalProps> = ({
           </h3>
           <p className="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
             {lang === 'lg'
-              ? 'Agrifarm AI yeetaaga kamera okukwata ebifaananyi by’ebikoola, ebiwuka n’endwadde ku ffaamu yo.'
+              ? 'AgriFarm Uganda yeetaaga kamera okukwata ebifaananyi by’ebikoola, ebiwuka n’endwadde ku ffaamu yo.'
               : lang === 'sw'
-              ? 'Agrifarm AI inahitaji idhini ya kamera ili kupiga picha majani yaliyoathirika na kugundua magonjwa mara moja.'
-              : 'Agrifarm AI needs camera access so you can photograph affected leaves, stems, and pests for instant AI diagnosis in the field.'}
+              ? 'AgriFarm Uganda inahitaji idhini ya kamera ili kupiga picha majani yaliyoathirika na kugundua magonjwa mara moja.'
+              : 'AgriFarm Uganda needs camera access so you can photograph affected leaves, stems, and pests for instant AI diagnosis in the field.'}
           </p>
         </div>
 

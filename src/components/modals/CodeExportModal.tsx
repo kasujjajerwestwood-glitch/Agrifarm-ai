@@ -32,15 +32,15 @@ export const CodeExportModal: React.FC<CodeExportModalProps> = ({ isOpen, onClos
   const gitCommands = `# 1. Initialize local repository in your project folder
 git init
 git add .
-git commit -m "feat: complete Agrifarm AI Assistant Manager app"
+git commit -m "feat: complete AgriFarm Uganda app"
 
 # 2. Add your GitHub repository remote (replace YOUR_USERNAME and YOUR_REPO)
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/agrifarm-ai.git
+git remote add origin https://github.com/YOUR_USERNAME/agrifarm-uganda.git
 git push -u origin main
 `;
 
-  const envFileContent = `# AGRIFARM AI - ENVIRONMENT VARIABLES
+  const envFileContent = `# AGRIFARM UGANDA - ENVIRONMENT VARIABLES
 # 1. Google Gemini Multimodal Vision API Key
 GEMINI_API_KEY="YOUR_GEMINI_API_KEY"
 

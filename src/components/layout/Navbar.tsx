@@ -91,14 +91,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div>
               <div className="flex items-center space-x-2">
                 <span className="font-heading font-extrabold text-xl tracking-tight text-stone-900 dark:text-stone-100">
-                  AGRIFARM <span className="text-emerald-700 dark:text-emerald-400">AI</span>
+                  AGRIFARM <span className="text-emerald-700 dark:text-emerald-400">UGANDA</span>
                 </span>
-                <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 rounded-full border border-emerald-200 dark:border-emerald-800">
-                  Manager
+                <span className="hidden sm:inline-flex items-center space-x-1 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 rounded-full border border-amber-200 dark:border-amber-800">
+                  <span>🇺🇬</span>
+                  <span>Uganda</span>
                 </span>
               </div>
               <p className="text-[11px] text-stone-500 dark:text-stone-400 hidden md:block leading-none">
-                Smart Farming. Better Decisions. Healthier Crops.
+                Smart Farming for Uganda · Better Decisions · Healthier Crops
               </p>
             </div>
           </div>

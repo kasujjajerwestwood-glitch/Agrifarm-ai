@@ -34,7 +34,7 @@ if (apiKey) {
 app.get('/api/health', (req: Request, res: Response) => {
   res.json({
     status: 'ok',
-    app: 'AGRIFARM AI ASSISTANT MANAGER',
+    app: 'AgriFarm Uganda',
     timestamp: new Date().toISOString(),
     aiConfigured: Boolean(apiKey),
   });

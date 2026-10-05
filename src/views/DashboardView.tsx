@@ -202,7 +202,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 className="flex-1 sm:flex-initial py-3.5 px-4 rounded-2xl bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/20 text-white font-bold text-xs sm:text-sm flex items-center justify-center space-x-2 transition-colors"
               >
                 <Sparkles className="w-4 h-4 text-emerald-300" />
-                <span>{lang === 'lg' ? 'Buuza AI' : lang === 'sw' ? 'Uliza AI' : 'Ask Agrifarm AI'}</span>
+                <span>{lang === 'lg' ? 'Buuza AgriFarm' : lang === 'sw' ? 'Uliza AgriFarm' : 'Ask AgriFarm Uganda'}</span>
               </button>
 
               <button

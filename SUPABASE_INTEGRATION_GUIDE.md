@@ -35,7 +35,7 @@ This guide provides the exact steps, SQL table definitions, and Row Level Securi
 
 ```sql
 -- ====================================================================
--- AGRIFARM AI ASSISTANT MANAGER - COMPLETE DATABASE DEFINITION & RLS
+-- AGRIFARM UGANDA - COMPLETE DATABASE DEFINITION & RLS
 -- ====================================================================
 
 -- 1. EXTENSIONS

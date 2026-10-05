@@ -704,7 +704,7 @@ export const ScannerView: React.FC<ScannerViewProps> = ({
               {/* Sample testing button */}
               <div className="flex items-center space-x-1.5 overflow-x-auto">
                 <span className="text-[11px] text-stone-400">Try sample:</span>
-                {sampleScannerTestImages.slice(0, 3).map((sample) => (
+                {sampleScannerTestImages.map((sample) => (
                   <button
                     key={sample.id}
                     onClick={() => handleSelectSample(sample)}

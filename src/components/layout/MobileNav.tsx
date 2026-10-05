@@ -65,7 +65,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({
     },
     {
       id: 'assistant',
-      label: lang === 'lg' ? 'AI' : lang === 'sw' ? 'AI' : 'Agrifarm AI',
+      label: lang === 'lg' ? 'AI' : lang === 'sw' ? 'AI' : 'AgriFarm UG',
       icon: Sparkles,
     },
     {

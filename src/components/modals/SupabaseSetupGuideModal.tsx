@@ -353,7 +353,7 @@ export const SupabaseSetupGuideModal: React.FC<SupabaseSetupGuideModalProps> = (
                 </span>
                 <div>
                   <div className="font-bold text-stone-900 dark:text-stone-100">
-                    Copy API Keys to Agrifarm
+                    Copy API Keys to AgriFarm Uganda
                   </div>
                   <div className="text-stone-500 dark:text-stone-400 mt-1 leading-relaxed">
                     Navigate to <strong>Project Settings &rarr; API</strong>. Copy your <strong>Project URL</strong> and <strong>anon public</strong> key, switch back to Tab 1 here, paste them in, and click <strong>Save Credentials</strong>.
@@ -410,7 +410,7 @@ export const SupabaseSetupGuideModal: React.FC<SupabaseSetupGuideModalProps> = (
         {/* Footer */}
         <div className="p-4 bg-stone-50 dark:bg-stone-800/80 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs shrink-0">
           <span className="text-stone-500 dark:text-stone-400">
-            Need help? Agrifarm operates smoothly offline while you complete Supabase setup.
+            Need help? AgriFarm Uganda operates smoothly offline while you complete Supabase setup.
           </span>
           <button
             onClick={onClose}

@@ -19,6 +19,7 @@ import {
 import { UserProfile, FarmerType, Language } from '../types';
 import { SupabaseService } from '../services/supabase';
 import { t } from '../services/i18n';
+import { UGANDA_DISTRICTS } from '../data/mockInitialData';
 
 interface WelcomeAuthViewProps {
   onAuthenticated: (user: UserProfile) => void;
@@ -163,7 +164,7 @@ export const WelcomeAuthView: React.FC<WelcomeAuthViewProps> = ({
           role: 'farmer',
           createdAt: new Date().toISOString(),
         };
-        setSuccessMsg('Account created locally. Welcome to Agrifarm AI!');
+        setSuccessMsg('Account created locally. Welcome to AgriFarm Uganda!');
         setTimeout(() => onAuthenticated(newProfile), 600);
       }
     } catch (err: any) {
@@ -229,16 +230,17 @@ export const WelcomeAuthView: React.FC<WelcomeAuthViewProps> = ({
               <Sprout className="w-9 h-9" />
             </div>
 
-            <h1 className="font-heading font-extrabold text-2xl sm:text-3xl tracking-tight text-white pt-2">
-              AGRIFARM <span className="text-emerald-400">AI</span>
+            <h1 className="font-heading font-extrabold text-2xl sm:text-3xl tracking-tight text-white pt-2 flex items-center justify-center space-x-2">
+              <span>AGRIFARM <span className="text-emerald-400">UGANDA</span></span>
+              <span className="text-xl">🇺🇬</span>
             </h1>
 
             <p className="text-xs sm:text-sm text-stone-300 max-w-xs mx-auto leading-relaxed">
               {lang === 'lg'
-                ? 'Okulima Okwamagezi · Ebirime Ebiramu'
+                ? 'Okulima Okwamagezi mu Uganda · Ebirime Ebiramu'
                 : lang === 'sw'
-                ? 'Kilimo Mahiri · Mazao Yenye Afya'
-                : 'Smart Farming · Better Decisions · Healthier Crops'}
+                ? 'Kilimo Mahiri cha Uganda · Mazao Yenye Afya'
+                : 'Smart Farming for Uganda · Better Decisions · Healthier Crops'}
             </p>
           </div>
 
@@ -413,15 +415,19 @@ export const WelcomeAuthView: React.FC<WelcomeAuthViewProps> = ({
                 </div>
                 <div>
                   <label className="block text-[11px] font-bold uppercase tracking-wider text-stone-300 mb-1">
-                    District / Region
+                    District / Region 🇺🇬
                   </label>
-                  <input
-                    type="text"
+                  <select
                     value={district}
                     onChange={(e) => setDistrict(e.target.value)}
-                    placeholder="e.g. Wakiso, Mbale"
                     className="w-full px-3 py-2 bg-stone-950 border border-stone-800 text-white text-xs rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                  />
+                  >
+                    {UGANDA_DISTRICTS.map((d) => (
+                      <option key={d} value={d}>
+                        {d}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
@@ -473,7 +479,7 @@ export const WelcomeAuthView: React.FC<WelcomeAuthViewProps> = ({
 
       {/* Footer */}
       <div className="text-center text-[11px] text-stone-500 pb-2">
-        Agrifarm AI Assistant Manager · Powered by Gemini Vision & Supabase PostgreSQL
+        AgriFarm Uganda · Powered by Gemini Vision & Supabase PostgreSQL · Supporting Ugandan Farmers 🇺🇬
       </div>
     </div>
   );

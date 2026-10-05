@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { UserProfile, FarmerType, Language } from '../../types';
 import { SupabaseService } from '../../services/supabase';
+import { UGANDA_DISTRICTS } from '../../data/mockInitialData';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -202,11 +203,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <Sprout className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="font-heading font-extrabold text-lg text-stone-900 dark:text-stone-100">
-                AGRIFARM <span className="text-emerald-700 dark:text-emerald-400">AI</span>
+              <h2 className="font-heading font-extrabold text-lg text-stone-900 dark:text-stone-100 flex items-center space-x-1.5">
+                <span>AGRIFARM <span className="text-emerald-700 dark:text-emerald-400">UGANDA</span></span>
+                <span className="text-sm">🇺🇬</span>
               </h2>
               <p className="text-xs text-stone-500 dark:text-stone-400">
-                Farmer Authentication & Data Sync
+                Ugandan Farmer Authentication & Cloud Sync
               </p>
             </div>
           </div>
@@ -338,7 +340,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 disabled={loading}
                 className="w-full py-3 bg-emerald-700 hover:bg-emerald-800 disabled:opacity-50 text-white font-bold text-sm rounded-xl shadow-md shadow-emerald-700/20 transition-all flex items-center justify-center space-x-2"
               >
-                <span>{loading ? 'Authenticating...' : 'Sign In to Agrifarm AI'}</span>
+                <span>{loading ? 'Authenticating...' : 'Sign In to AgriFarm Uganda'}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </form>
@@ -411,15 +413,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
                 <div>
                   <label className="block text-[11px] font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
-                    District / Region
+                    District / Region 🇺🇬
                   </label>
-                  <input
-                    type="text"
+                  <select
                     value={district}
                     onChange={(e) => setDistrict(e.target.value)}
-                    placeholder="e.g. Wakiso"
                     className="w-full px-3 py-2 text-xs border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-xl focus:ring-2 focus:ring-emerald-500"
-                  />
+                  >
+                    {UGANDA_DISTRICTS.map((d) => (
+                      <option key={d} value={d}>
+                        {d}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 

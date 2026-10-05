@@ -218,7 +218,7 @@ export const StorageService = {
   exportFullData(): string {
     const data = {
       exportedAt: new Date().toISOString(),
-      platform: 'AGRIFARM AI ASSISTANT MANAGER',
+      platform: 'AgriFarm Uganda',
       version: '1.0.0',
       user: this.getUser(),
       farm: this.getFarm(),

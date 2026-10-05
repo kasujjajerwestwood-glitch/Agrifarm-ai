@@ -1,5 +1,5 @@
 export const SUPABASE_SCHEMA_SQL = `-- ====================================================================
--- AGRIFARM AI ASSISTANT MANAGER - SUPABASE POSTGRESQL SCHEMA
+-- AGRIFARM UGANDA - SUPABASE POSTGRESQL SCHEMA
 -- Complete database definitions, Row Level Security (RLS) policies,
 -- storage buckets, user auto-provisioning triggers, and indexes.
 -- ====================================================================

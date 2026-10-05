@@ -57,7 +57,7 @@ export const AlertsView: React.FC<AlertsViewProps> = ({
     const res = await NotificationService.requestPermission();
     setBrowserPermission(res);
     if (res === 'granted') {
-      NotificationService.sendNotification('Agrifarm AI Notifications Enabled! 🌾', {
+      NotificationService.sendNotification('AgriFarm Uganda Notifications Enabled! 🌾', {
         body: 'You will receive real-time crop disease alerts and weather updates.',
         severity: 'success',
       });

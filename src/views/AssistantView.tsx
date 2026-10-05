@@ -45,39 +45,39 @@ export const AssistantView: React.FC<AssistantViewProps> = ({
 }) => {
   const getWelcomeContent = (l: Language) => {
     if (l === 'lg') {
-      return `Oli otya nno! Nze **Agrifarm AI**, omukugu wo ow'ebyobulimi n'okulongoosa ffaamu yo.
+      return `Oli otya nno! Nze **Agrifarm Uganda**, omukugu wo ow'ebyobulimi n'okulongoosa ffaamu yo mu Uganda.
 
 Nsobola okukuyambako ku:
-- **Okukekkebya endwadde z'ebirime n'ebiwuka**
+- **Okukekkebya endwadde z'ebirime (matooke, emmwanyi, kasooli, ebijanjalo)**
 - **Obugimu bw'ettaka n'okukola nakavundira (organic compost)**
-- **Enteekateeka y'okufukirira n'okugoberera enkuba**
+- **Enteekateeka y'okufukirira n'okugoberera enkuba mu bitundu bya Uganda**
 - **Engeri y'okutangiramu ebiwuka n'eddagala eritatta ttaka (IPM)**
-- **Amakungula n'okukuuma ebiwandiiko bya ffaamu**
+- **Amakungula n'okukuuma ebiwandiiko bya ffaamu (mu Shillings UGX)**
 
 Buuza ekibuuzo kyonna wansi oba teekako ekifaananyi ky'ekirime kyo!`;
     }
     if (l === 'sw') {
-      return `Habari za kazi! Mimi ni **Agrifarm AI**, mshauri wako wa kidijitali wa kilimo na afya ya mazao.
+      return `Habari za kazi! Mimi ni **Agrifarm Uganda**, mshauri wako wa kidijitali wa kilimo na afya ya mazao nchini Uganda.
 
 Ninaweza kukusaidia kuhusu:
-- **Utambuzi wa magonjwa ya mazao na wadudu waharibifu**
+- **Utambuzi wa magonjwa ya mazao na wadudu waharibifu (ndizi, kahawa, mahindi, maharage)**
 - **Rutuba ya udongo na uandaaji wa mbolea ya asili (mboji)**
-- **Ratiba ya umwagiliaji kulingana na utabiri wa hewa**
+- **Ratiba ya umwagiliaji kulingana na misimu ya mvua ya Uganda**
 - **Udhibiti Jumuishi wa Wadudu (IPM)**
-- **Upangaji wa mavuno na uhifadhi sahihi wa kumbukumbu za shamba**
+- **Upangaji wa mavuno na kumbukumbu za fedha za shamba (UGX)**
 
 Uliza swali lako hapa chini au pakia picha ya zao lako!`;
     }
-    return `Hello! I am **Agrifarm AI**, your digital agricultural consultant and agronomist. 
+    return `Hello! I am **Agrifarm Uganda**, your digital agricultural consultant and agronomist tailored for Ugandan farming conditions. 
 
 I can assist you with:
-- **Crop disease & pest diagnosis**
-- **Soil fertility & organic compost formulations**
-- **Irrigation scheduling & weather-based timing**
-- **Integrated Pest Management (IPM)**
-- **Harvest timing & digital farm record keeping**
+- **Crop disease & pest diagnosis (Matooke, Coffee, Maize, Beans, Cassava, Irish Potatoes)**
+- **Soil fertility, lime, and organic compost formulations**
+- **Ugandan seasonal rain patterns & irrigation scheduling**
+- **Integrated Pest Management (IPM) & Good Agricultural Practices (GAP)**
+- **Farm record keeping & budget management in Uganda Shillings (UGX)**
 
-Feel free to ask a question below or upload a photo of your field!`;
+Feel free to ask a question below or upload a photo of your plant!`;
   };
 
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -283,7 +283,7 @@ Feel free to ask a question below or upload a photo of your field!`;
           <div>
             <div className="flex items-center space-x-2">
               <h2 className="font-heading font-extrabold text-base tracking-tight text-white">
-                Agrifarm AI
+                Agrifarm Uganda AI
               </h2>
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             </div>

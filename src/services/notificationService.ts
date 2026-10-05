@@ -137,9 +137,9 @@ class NotificationServiceImpl {
 
     try {
       new Notification(title, {
-        body: options?.body || 'Agrifarm AI Advisory update',
+        body: options?.body || 'AgriFarm Uganda Advisory update',
         icon: options?.icon || 'https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/sprout.svg',
-        tag: options?.tag || 'agrifarm-alert',
+        tag: options?.tag || 'agrifarm-uganda-alert',
       });
       return true;
     } catch (err) {

@@ -21,7 +21,7 @@ export const ACCENT_THEMES: AccentThemeOption[] = [
     id: 'emerald',
     name: 'Emerald Forest',
     dotColor: '#059669',
-    description: 'Classic Agrifarm lush green foliage',
+    description: 'Classic AgriFarm lush green foliage',
   },
   {
     id: 'savannah',

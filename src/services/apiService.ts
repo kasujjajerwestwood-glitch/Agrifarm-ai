@@ -66,7 +66,7 @@ export const ApiService = {
     language?: string;
   }): Promise<{ reply: string }> {
     if (!this.isOnline()) {
-      throw new Error('Agrifarm AI needs an active internet connection to answer inquiries.');
+      throw new Error('AgriFarm Uganda needs an active internet connection to answer inquiries.');
     }
 
     try {
@@ -79,7 +79,7 @@ export const ApiService = {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || 'Unable to consult Agrifarm AI. Please try again shortly.');
+        throw new Error(data.error || 'Unable to consult AgriFarm Uganda AI. Please try again shortly.');
       }
 
       return data;

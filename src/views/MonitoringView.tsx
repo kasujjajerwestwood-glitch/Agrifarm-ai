@@ -201,7 +201,7 @@ export const MonitoringView: React.FC<MonitoringViewProps> = ({
               Smart Drip & Solenoid Valve Control
             </h2>
             <p className="text-xs sm:text-sm text-stone-500 mt-1 max-w-2xl leading-relaxed">
-              Agrifarm AI is engineered to bridge soil moisture sensors, weather predictions, and automated pump relays. In this release, manual oversight is enforced for safety.
+              AgriFarm Uganda is engineered to bridge soil moisture sensors, weather predictions, and automated pump relays. In this release, manual oversight is enforced for safety.
             </p>
           </div>
 
@@ -220,7 +220,7 @@ export const MonitoringView: React.FC<MonitoringViewProps> = ({
               </span>
               <ArrowRight className="w-4 h-4 text-stone-400" />
               <span className="p-3 bg-emerald-700 text-white rounded-xl shadow-xs">
-                ☁️ Agrifarm Cloud AI
+                ☁️ AgriFarm Uganda Cloud AI
               </span>
               <ArrowRight className="w-4 h-4 text-stone-400" />
               <span className="p-3 bg-white border border-stone-200 rounded-xl text-stone-800 shadow-2xs">

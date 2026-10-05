@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { UserProfile, FarmerType, Language, Farm, Crop, Field, PlantScan } from '../types';
 import { SupabaseService } from '../services/supabase';
+import { UGANDA_DISTRICTS } from '../data/mockInitialData';
 
 interface ProfileViewProps {
   user: UserProfile;
@@ -251,7 +252,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             <div>
               <p className="font-bold">Complete your agricultural profile ({completionPercent}%)</p>
               <p className="text-amber-700 dark:text-amber-400/90 text-[11px]">
-                Providing your specific district and farming type allows Agrifarm AI to deliver tailored disease warnings and agronomic tips.
+                Providing your specific district and farming type allows AgriFarm Uganda to deliver tailored disease warnings and agronomic tips.
               </p>
             </div>
           </div>
@@ -606,16 +607,22 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
               <div>
                 <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-1">
-                  District / County <span className="text-rose-500">*</span>
+                  District / County (Uganda 🇺🇬) <span className="text-rose-500">*</span>
                 </label>
                 <input
                   type="text"
                   required
+                  list="uganda-districts-list"
                   value={formData.district}
                   onChange={(e) => setFormData({ ...formData, district: e.target.value })}
                   className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-xl focus:ring-2 focus:ring-emerald-500"
-                  placeholder="e.g. Wakiso, Mukono, Nakuru, Arusha"
+                  placeholder="e.g. Wakiso, Mukono, Mbale, Mbarara"
                 />
+                <datalist id="uganda-districts-list">
+                  {UGANDA_DISTRICTS.map((d) => (
+                    <option key={d} value={d} />
+                  ))}
+                </datalist>
               </div>
 
               <div>

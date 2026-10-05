@@ -100,7 +100,8 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
           <div>
             <div className="flex items-center space-x-2 text-emerald-800 font-heading font-extrabold text-xl sm:text-2xl tracking-tight">
               <Sprout className="w-6 h-6 text-emerald-600" />
-              <span>AGRIFARM AI ASSISTANT MANAGER</span>
+              <span>AGRIFARM UGANDA</span>
+              <span className="text-base">🇺🇬</span>
             </div>
             <p className="text-xs text-stone-500 font-medium mt-0.5">
               Official Agricultural Technical & Diagnostic Report
@@ -295,7 +296,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
         <div className="pt-6 border-t border-stone-200 flex flex-col sm:flex-row items-center justify-between text-[11px] text-stone-400 gap-3">
           <div className="flex items-center space-x-1.5">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span>Verified by Agrifarm AI Assistant Manager Decision-Support Engine</span>
+            <span>Verified by AgriFarm Uganda Decision-Support Engine</span>
           </div>
           <div>Page 1 of 1 • System Build 2026</div>
         </div>

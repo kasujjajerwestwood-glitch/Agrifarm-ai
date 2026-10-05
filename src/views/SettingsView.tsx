@@ -245,7 +245,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           </span>
         </div>
         <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
-          Personalize the look of Agrifarm with natural agricultural color palettes inspired by crops, soils, and sunlight.
+          Personalize the look of AgriFarm Uganda with natural agricultural color palettes inspired by crops, soils, and sunlight.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
@@ -327,7 +327,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               <span>Supabase Cloud PostgreSQL & Storage Synchronization</span>
             </h3>
             <p className="text-xs text-stone-500 dark:text-stone-400 mt-1 leading-relaxed">
-              By default, Agrifarm AI operates offline-first with resilient local browser persistence. Connect your Supabase project (URL & Anon API Key) for real-time cloud multi-user profiles, Row Level Security, and image storage.
+              By default, Agrifarm Uganda operates offline-first with resilient local browser persistence. Connect your Supabase project (URL & Anon API Key) for real-time cloud multi-user profiles, Row Level Security, and image storage.
             </p>
           </div>
 
@@ -438,7 +438,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           <span>Agricultural Privacy & Multimodal AI Disclosure</span>
         </div>
         <p>
-          Uploaded plant photographs are transmitted securely to Google Gemini Multimodal Vision API strictly for agricultural diagnosis. Agrifarm AI does not sell or distribute personal farmer records to third-party advertisers. All diagnostic findings are saved locally or to your authenticated Supabase PostgreSQL cloud database.
+          Uploaded plant photographs are transmitted securely to Google Gemini Multimodal Vision API strictly for agricultural diagnosis. Agrifarm Uganda does not sell or distribute personal farmer records to third-party advertisers. All diagnostic findings are saved locally or to your authenticated Supabase PostgreSQL cloud database.
         </p>
       </div>
 
