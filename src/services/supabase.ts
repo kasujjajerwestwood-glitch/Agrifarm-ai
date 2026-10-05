@@ -102,32 +102,116 @@ class SupabaseServiceImpl {
   // AUTHENTICATION
   // ==========================================
 
-  public async signUp(email: string, password: string, fullName: string) {
+  public async signUp(
+    email: string,
+    password: string,
+    fullName: string,
+    extraData?: {
+      phoneNumber?: string;
+      district?: string;
+      country?: string;
+      farmerType?: string;
+      farmName?: string;
+    }
+  ) {
     if (!this.client) throw new Error('Supabase is not configured.');
 
+    const cleanEmail = email ? email.trim().toLowerCase() : '';
+    const cleanPassword = password ? password.trim() : '';
+    const cleanName = (fullName && fullName.trim()) || cleanEmail.split('@')[0] || 'Farmer';
+
+    if (!cleanEmail || !cleanPassword) {
+      throw new Error('Email and password cannot be empty.');
+    }
+
+    if (cleanPassword.length < 6) {
+      throw new Error('Password must be at least 6 characters long.');
+    }
+
+    // Step A: Create auth user via supabase.auth.signUp
     const { data, error } = await this.client.auth.signUp({
-      email,
-      password,
+      email: cleanEmail,
+      password: cleanPassword,
       options: {
         data: {
-          full_name: fullName,
+          full_name: cleanName,
+          name: cleanName,
+          phone_number: extraData?.phoneNumber || null,
+          district: extraData?.district || 'Wakiso',
+          country: extraData?.country || 'Uganda',
+          farmer_type: extraData?.farmerType || 'Smallholder Farmer',
+          farm_name: extraData?.farmName || `${extraData?.district || 'Wakiso'} Farm`,
         },
       },
     });
 
-    if (error) throw error;
+    if (error) {
+      if (error.message?.includes('already registered')) {
+        throw new Error('An account with this email already exists. Please sign in instead.');
+      }
+      throw error;
+    }
+
+    // Step B: Immediately insert matching row into profiles if session is active
+    if (data.user?.id) {
+      try {
+        const { error: profileError } = await this.client.from('profiles').upsert(
+          {
+            id: data.user.id,
+            name: cleanName,
+            email: cleanEmail,
+            phone_number: extraData?.phoneNumber || null,
+            district: extraData?.district || 'Wakiso',
+            country: extraData?.country || 'Uganda',
+            farmer_type: extraData?.farmerType || 'Smallholder Farmer',
+            preferred_language: 'en',
+            role: 'farmer',
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: 'id' }
+        );
+
+        if (profileError) {
+          console.warn('Frontend profile upsert note (database trigger will guarantee creation):', profileError);
+        }
+      } catch (err) {
+        console.warn('Handled by handle_new_user database trigger:', err);
+      }
+    }
+
     return data;
   }
 
   public async signIn(email: string, password: string) {
     if (!this.client) throw new Error('Supabase is not configured.');
 
+    const cleanEmail = email ? email.trim().toLowerCase() : '';
+    const cleanPassword = password ? password.trim() : '';
+
+    if (!cleanEmail || !cleanPassword) {
+      throw new Error('Please enter both your email address and password.');
+    }
+
     const { data, error } = await this.client.auth.signInWithPassword({
-      email,
-      password,
+      email: cleanEmail,
+      password: cleanPassword,
     });
 
-    if (error) throw error;
+    if (error) {
+      if (error.message?.toLowerCase().includes('email not confirmed')) {
+        throw new Error(
+          'Email not confirmed yet. Please verify your email inbox or disable "Confirm email" in Supabase Auth settings.'
+        );
+      }
+      if (
+        error.message?.toLowerCase().includes('invalid login credentials') ||
+        error.message?.toLowerCase().includes('invalid_grant')
+      ) {
+        throw new Error('Invalid email or password. Please verify your credentials or register a new account.');
+      }
+      throw error;
+    }
+
     return data;
   }
 
@@ -263,20 +347,26 @@ class SupabaseServiceImpl {
   public async saveProfile(profile: UserProfile): Promise<void> {
     if (!this.client) return;
 
-    await this.client.from('profiles').upsert({
-      id: profile.id,
-      name: profile.name,
-      email: profile.email,
-      phone_number: profile.phoneNumber,
-      country: profile.country,
-      district: profile.district,
-      town_village: profile.farmName,
-      farmer_type: profile.farmerType,
-      preferred_language: profile.preferredLanguage,
-      avatar_url: profile.avatarUrl,
-      role: profile.role,
-      updated_at: new Date().toISOString(),
-    });
+    const safeName = (profile.name && profile.name.trim()) || 'Farmer';
+    const safeEmail = (profile.email && profile.email.trim().toLowerCase()) || 'farmer@agrifarm.ai';
+
+    await this.client.from('profiles').upsert(
+      {
+        id: profile.id,
+        name: safeName,
+        email: safeEmail,
+        phone_number: profile.phoneNumber?.trim() || null,
+        country: profile.country?.trim() || 'Uganda',
+        district: profile.district?.trim() || 'Wakiso',
+        town_village: profile.farmName?.trim() || null,
+        farmer_type: profile.farmerType || 'Smallholder Farmer',
+        preferred_language: profile.preferredLanguage || 'en',
+        avatar_url: profile.avatarUrl || null,
+        role: profile.role || 'farmer',
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'id' }
+    );
   }
 
   // ==========================================

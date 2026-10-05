@@ -61,7 +61,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
     try {
       if (isSupabaseActive) {
-        const { user: authUser } = await SupabaseService.signIn(email, password);
+        const cleanEmail = email.trim().toLowerCase();
+        const { user: authUser } = await SupabaseService.signIn(cleanEmail, password);
         if (authUser) {
           // Fetch user profile from Supabase
           const profile = await SupabaseService.getProfile(authUser.id);
@@ -71,8 +72,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             onUpdateUser({
               ...user,
               id: authUser.id,
-              email: authUser.email || email,
-              name: fullName || user.name,
+              email: authUser.email || cleanEmail,
+              name: fullName.trim() || user.name,
             });
           }
           setSuccessMsg('Successfully signed in via Supabase!');
@@ -102,12 +103,30 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
     try {
       if (isSupabaseActive) {
-        const { user: authUser } = await SupabaseService.signUp(email, password, fullName);
+        const cleanEmail = email.trim().toLowerCase();
+        const cleanName = fullName.trim() || 'Farmer';
+
+        const signUpResult = await SupabaseService.signUp(
+          cleanEmail,
+          password,
+          cleanName,
+          {
+            phoneNumber: phoneNumber.trim(),
+            district: district.trim(),
+            country: country.trim(),
+            farmerType,
+            farmName: farmName.trim(),
+          }
+        );
+
+        const authUser = signUpResult.user;
+        const authSession = signUpResult.session;
+
         if (authUser) {
           const newProfile: UserProfile = {
             id: authUser.id,
-            name: fullName.trim(),
-            email: email.trim(),
+            name: cleanName,
+            email: authUser.email || cleanEmail,
             phoneNumber: phoneNumber.trim() || undefined,
             country: country.trim(),
             district: district.trim(),
@@ -118,10 +137,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             createdAt: new Date().toISOString(),
           };
 
-          await SupabaseService.saveProfile(newProfile);
-          onUpdateUser(newProfile);
-          setSuccessMsg('Registration successful! Profile created in Supabase.');
-          setTimeout(() => onClose(), 1000);
+          if (authSession) {
+            onUpdateUser(newProfile);
+            setSuccessMsg('Registration successful! Profile created in Supabase.');
+            setTimeout(() => onClose(), 1000);
+          } else {
+            setSuccessMsg(
+              'Account created! If confirmation is required, check your email inbox before signing in.'
+            );
+            setActiveTab('signin');
+          }
         }
       } else {
         // Local session mode

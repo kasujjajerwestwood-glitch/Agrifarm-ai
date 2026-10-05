@@ -106,30 +106,48 @@ export const WelcomeAuthView: React.FC<WelcomeAuthViewProps> = ({
 
     try {
       if (isSupabaseConfigured) {
-        const { user: sbUser } = await SupabaseService.signUp(
-          email.trim(),
+        const cleanEmail = email.trim().toLowerCase();
+        const cleanName = fullName.trim() || 'Farmer';
+
+        const signUpResult = await SupabaseService.signUp(
+          cleanEmail,
           password,
-          fullName.trim() || 'Farmer'
+          cleanName,
+          {
+            phoneNumber: phoneNumber.trim(),
+            district: district.trim(),
+            farmerType,
+            farmName: `${district.trim()} Farm`,
+          }
         );
+
+        const sbUser = signUpResult.user;
+        const sbSession = signUpResult.session;
 
         if (sbUser) {
           const newProfile: UserProfile = {
             id: sbUser.id,
-            name: fullName.trim() || 'Farmer',
-            email: sbUser.email || email.trim(),
-            phoneNumber,
-            district,
+            name: cleanName,
+            email: sbUser.email || cleanEmail,
+            phoneNumber: phoneNumber.trim() || undefined,
+            district: district.trim(),
             country: 'Uganda',
             preferredLanguage: lang,
             farmerType,
-            farmName: `${district} Farm`,
+            farmName: `${district.trim()} Farm`,
             role: 'farmer',
             createdAt: new Date().toISOString(),
           };
 
-          await SupabaseService.saveProfile(newProfile);
-          setSuccessMsg('Account created successfully! Loading dashboard...');
-          setTimeout(() => onAuthenticated(newProfile), 600);
+          if (sbSession) {
+            setSuccessMsg('Account created successfully! Loading your farm dashboard...');
+            setTimeout(() => onAuthenticated(newProfile), 600);
+          } else {
+            setSuccessMsg(
+              'Account registered! If confirmation is enabled in Supabase, check your inbox. You can now sign in.'
+            );
+            setMode('signin');
+          }
         }
       } else {
         const newProfile: UserProfile = {
