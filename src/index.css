@@ -53,3 +53,53 @@
 .dark ::-webkit-scrollbar-thumb:hover {
   background: #57534e;
 }
+
+/* Dynamic Agrifarm Theme Accents */
+:root {
+  --primary-accent: #059669;
+  --primary-accent-hover: #047857;
+  --primary-accent-light: #ecfdf5;
+  --primary-accent-dark: #064e3b;
+}
+
+[data-accent="savannah"] {
+  --primary-accent: #16a34a;
+  --primary-accent-hover: #15803d;
+  --primary-accent-light: #f0fdf4;
+  --primary-accent-dark: #14532d;
+}
+
+[data-accent="amber"] {
+  --primary-accent: #d97706;
+  --primary-accent-hover: #b45309;
+  --primary-accent-light: #fffbeb;
+  --primary-accent-dark: #78350f;
+}
+
+[data-accent="terracotta"] {
+  --primary-accent: #c2410c;
+  --primary-accent-hover: #9a3412;
+  --primary-accent-light: #fff7ed;
+  --primary-accent-dark: #7c2d12;
+}
+
+[data-accent="forest"] {
+  --primary-accent: #4d7c0f;
+  --primary-accent-hover: #3f6212;
+  --primary-accent-light: #f7fee7;
+  --primary-accent-dark: #1a2e05;
+}
+
+[data-accent="teal"] {
+  --primary-accent: #0d9488;
+  --primary-accent-hover: #0f766e;
+  --primary-accent-light: #f0fdfa;
+  --primary-accent-dark: #134e4a;
+}
+
+[data-accent="indigo"] {
+  --primary-accent: #4f46e5;
+  --primary-accent-hover: #4338ca;
+  --primary-accent-light: #eef2ff;
+  --primary-accent-dark: #312e81;
+}

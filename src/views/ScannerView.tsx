@@ -29,6 +29,7 @@ import { Crop, Field, PlantScan, PlantScanAnalysis, Language } from '../types';
 import { ApiService } from '../services/apiService';
 import { sampleScannerTestImages } from '../data/mockInitialData';
 import { useImageValidation, ImageValidationResult } from '../hooks/useImageValidation';
+import { CameraPermissionModal } from '../components/modals/CameraPermissionModal';
 import { t } from '../services/i18n';
 
 interface ScannerViewProps {
@@ -108,6 +109,7 @@ export const ScannerView: React.FC<ScannerViewProps> = ({
   const [activeScanId, setActiveScanId] = useState<string | null>(initialScan ? initialScan.id : null);
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [showPhotoTips, setShowPhotoTips] = useState(true);
+  const [isCameraGuideModalOpen, setIsCameraGuideModalOpen] = useState(false);
 
   // File input refs for separate camera vs upload gallery actions
   const cameraInputRef = useRef<HTMLInputElement>(null);
@@ -681,9 +683,19 @@ export const ScannerView: React.FC<ScannerViewProps> = ({
           <div className="bg-white dark:bg-stone-900 rounded-3xl border border-stone-200 dark:border-stone-800 p-6 space-y-5 shadow-xs">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
-                <h3 className="font-heading font-extrabold text-base text-stone-900 dark:text-stone-100">
-                  Step 1: Capture or Upload Plant Photo
-                </h3>
+                <div className="flex items-center space-x-2">
+                  <h3 className="font-heading font-extrabold text-base text-stone-900 dark:text-stone-100">
+                    Step 1: Capture or Upload Plant Photo
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => setIsCameraGuideModalOpen(true)}
+                    className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-[11px] font-bold border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition-colors"
+                  >
+                    <Camera className="w-3 h-3" />
+                    <span>Camera Tips</span>
+                  </button>
+                </div>
                 <p className="text-xs text-stone-500 dark:text-stone-400">
                   Take a photo directly with your camera or select from your photo gallery
                 </p>
@@ -1043,6 +1055,17 @@ export const ScannerView: React.FC<ScannerViewProps> = ({
           </div>
         </div>
       )}
+
+      {/* CAMERA PERMISSION & PHOTOGRAPHY TIPS MODAL */}
+      <CameraPermissionModal
+        isOpen={isCameraGuideModalOpen}
+        onClose={() => setIsCameraGuideModalOpen(false)}
+        onPermissionGranted={() => {
+          setIsCameraGuideModalOpen(false);
+          cameraInputRef.current?.click();
+        }}
+        lang={lang}
+      />
     </div>
   );
 };

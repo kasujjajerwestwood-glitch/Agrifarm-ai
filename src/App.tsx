@@ -21,10 +21,12 @@ import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 import { MobileNav } from './components/layout/MobileNav';
 import { AuthModal } from './components/modals/AuthModal';
+import { CameraPermissionModal } from './components/modals/CameraPermissionModal';
 import { SupabaseSetupGuideModal } from './components/modals/SupabaseSetupGuideModal';
 import { NotificationToast } from './components/common/NotificationToast';
 
 // Views
+import { WelcomeAuthView } from './views/WelcomeAuthView';
 import { DashboardView } from './views/DashboardView';
 import { ScannerView } from './views/ScannerView';
 import { AssistantView } from './views/AssistantView';
@@ -77,6 +79,41 @@ export default function App() {
   // Auth & Setup Modals
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
+
+  // Onboarding & Welcome gate: Prompt login / sign-in on first app open
+  const [hasCompletedWelcome, setHasCompletedWelcome] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('agrifarm_welcome_completed') === 'true';
+    }
+    return false;
+  });
+  const [isCameraModalOpen, setIsCameraModalOpen] = useState(false);
+
+  const handleWelcomeComplete = (authenticatedUser?: UserProfile) => {
+    if (authenticatedUser) {
+      setUser(authenticatedUser);
+      setLang(authenticatedUser.preferredLanguage || 'en');
+      StorageService.saveUser(authenticatedUser);
+    }
+    localStorage.setItem('agrifarm_welcome_completed', 'true');
+    setHasCompletedWelcome(true);
+
+    // Prompt camera permission if not yet decided
+    const camPerm = localStorage.getItem('agrifarm_camera_permission');
+    if (!camPerm || camPerm === 'dismissed') {
+      setIsCameraModalOpen(true);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await SupabaseService.signOut();
+    } catch (e) {
+      console.warn('Sign out:', e);
+    }
+    localStorage.removeItem('agrifarm_welcome_completed');
+    setHasCompletedWelcome(false);
+  };
 
   // Weather state
   const [weather, setWeather] = useState<WeatherData>({
@@ -369,6 +406,39 @@ export default function App() {
 
   const unreadAlertsCount = alerts.filter((a) => !a.isRead).length;
 
+  // Initial welcome & onboarding gate for new/unauthenticated users
+  if (!hasCompletedWelcome) {
+    return (
+      <div className="min-h-screen bg-stone-950 text-white font-sans">
+        <WelcomeAuthView
+          onAuthenticated={handleWelcomeComplete}
+          onContinueAsGuest={() => handleWelcomeComplete()}
+          lang={lang}
+          onSelectLang={(newLang) => {
+            setLang(newLang);
+            handleUpdateUser({ ...user, preferredLanguage: newLang });
+          }}
+          onOpenSupabaseGuide={() => setIsGuideOpen(true)}
+        />
+
+        <CameraPermissionModal
+          isOpen={isCameraModalOpen}
+          onClose={() => setIsCameraModalOpen(false)}
+          onPermissionGranted={() => {
+            setIsCameraModalOpen(false);
+            setCurrentTab('scan');
+          }}
+          lang={lang}
+        />
+
+        <SupabaseSetupGuideModal
+          isOpen={isGuideOpen}
+          onClose={() => setIsGuideOpen(false)}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 flex flex-col md:flex-row font-sans transition-colors duration-200">
       {/* Desktop Sidebar (hidden on mobile, visible on md and up) */}
@@ -582,6 +652,7 @@ export default function App() {
             onResetData={handleResetData}
             onWipeData={handleWipeData}
             onOpenAuth={() => setIsAuthOpen(true)}
+            onSignOut={handleSignOut}
             onNavigate={(tab) => setCurrentTab(tab)}
           />
         )}
@@ -635,6 +706,17 @@ export default function App() {
       <SupabaseSetupGuideModal
         isOpen={isGuideOpen}
         onClose={() => setIsGuideOpen(false)}
+      />
+
+      {/* Camera Permission Modal */}
+      <CameraPermissionModal
+        isOpen={isCameraModalOpen}
+        onClose={() => setIsCameraModalOpen(false)}
+        onPermissionGranted={() => {
+          setIsCameraModalOpen(false);
+          setCurrentTab('scan');
+        }}
+        lang={lang}
       />
     </div>
   );

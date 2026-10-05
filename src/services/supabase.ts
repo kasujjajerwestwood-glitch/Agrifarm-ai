@@ -201,7 +201,17 @@ class SupabaseServiceImpl {
       contentType = fileOrBase64.type || 'image/jpeg';
     }
 
-    const path = `${Date.now()}_${fileName.replace(/[^a-zA-Z0-9._-]/g, '')}`;
+    const sanitizedName = fileName.replace(/[^a-zA-Z0-9._-]/g, '') || 'photo.jpg';
+    let userPrefix = 'public';
+    try {
+      const { data } = await this.client.auth.getUser();
+      if (data?.user?.id) {
+        userPrefix = data.user.id;
+      }
+    } catch {
+      // ignore
+    }
+    const path = `${userPrefix}/${Date.now()}_${sanitizedName}`;
 
     const { error } = await this.client.storage.from(bucket).upload(path, blob, {
       contentType,

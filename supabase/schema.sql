@@ -1,7 +1,7 @@
 -- ====================================================================
 -- AGRIFARM AI ASSISTANT MANAGER - SUPABASE POSTGRESQL SCHEMA
 -- Complete database definitions, Row Level Security (RLS) policies,
--- storage buckets, user auto-provisioning triggers, and seed data.
+-- storage buckets, user auto-provisioning triggers, and indexes.
 -- ====================================================================
 
 -- 1. EXTENSIONS
@@ -45,7 +45,20 @@ CREATE TABLE IF NOT EXISTS public.farms (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 4. CROPS TABLE
+-- 4. FIELDS / PLOTS TABLE
+CREATE TABLE IF NOT EXISTS public.fields (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  farm_id UUID REFERENCES public.farms(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  area_acres NUMERIC DEFAULT 1.0,
+  soil_type TEXT DEFAULT 'Sandy Loam',
+  irrigation TEXT DEFAULT 'Drip',
+  notes TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 5. CROPS TABLE
 CREATE TABLE IF NOT EXISTS public.crops (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -64,7 +77,7 @@ CREATE TABLE IF NOT EXISTS public.crops (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 5. PLANT SCANS & DIAGNOSES TABLE
+-- 6. PLANT SCANS & DIAGNOSES TABLE
 CREATE TABLE IF NOT EXISTS public.plant_scans (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -78,7 +91,7 @@ CREATE TABLE IF NOT EXISTS public.plant_scans (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 6. PESTS DATABASE TABLE (Agronomic Knowledge)
+-- 7. PESTS DATABASE TABLE (Agronomic Knowledge)
 CREATE TABLE IF NOT EXISTS public.pests (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
@@ -100,7 +113,7 @@ CREATE TABLE IF NOT EXISTS public.pests (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 7. DISEASES DATABASE TABLE (Agronomic Knowledge)
+-- 8. DISEASES DATABASE TABLE (Agronomic Knowledge)
 CREATE TABLE IF NOT EXISTS public.diseases (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
@@ -121,7 +134,7 @@ CREATE TABLE IF NOT EXISTS public.diseases (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 8. CROP KNOWLEDGE & COMPENDIUM TABLE
+-- 9. CROP KNOWLEDGE & COMPENDIUM TABLE
 CREATE TABLE IF NOT EXISTS public.crop_knowledge (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
@@ -147,7 +160,7 @@ CREATE TABLE IF NOT EXISTS public.crop_knowledge (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 9. FARM ACTIVITIES / RECORD KEEPING TABLE
+-- 10. FARM ACTIVITIES / RECORD KEEPING TABLE
 CREATE TABLE IF NOT EXISTS public.farm_activities (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -161,7 +174,7 @@ CREATE TABLE IF NOT EXISTS public.farm_activities (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 10. AI CONVERSATIONS & CHAT HISTORY
+-- 11. AI CONVERSATIONS & CHAT HISTORY
 CREATE TABLE IF NOT EXISTS public.ai_conversations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -179,7 +192,7 @@ CREATE TABLE IF NOT EXISTS public.ai_messages (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 11. SMART NOTIFICATIONS TABLE
+-- 12. SMART NOTIFICATIONS TABLE
 CREATE TABLE IF NOT EXISTS public.notifications (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -192,54 +205,82 @@ CREATE TABLE IF NOT EXISTS public.notifications (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- 13. SENSORS & TELEMETRY TABLE
+CREATE TABLE IF NOT EXISTS public.sensors (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  farm_id UUID REFERENCES public.farms(id) ON DELETE CASCADE,
+  sensor_name TEXT NOT NULL,
+  sensor_type TEXT NOT NULL,
+  value NUMERIC NOT NULL,
+  unit TEXT NOT NULL,
+  status TEXT DEFAULT 'Normal',
+  last_updated TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- ====================================================================
 -- ROW LEVEL SECURITY (RLS) POLICIES
--- Strict user isolation: Farmers only access their own data.
--- Knowledge tables are public read-only for authenticated farmers.
+-- Clean idempotent setup: Drop previous policies if they already exist
 -- ====================================================================
 
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.farms ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.fields ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.crops ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.plant_scans ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.farm_activities ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.ai_conversations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.ai_messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.notifications ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.sensors ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.pests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.diseases ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.crop_knowledge ENABLE ROW LEVEL SECURITY;
 
 -- Profiles policies
+DROP POLICY IF EXISTS "Users can view their own profile" ON public.profiles;
 CREATE POLICY "Users can view their own profile" ON public.profiles
   FOR SELECT USING (auth.uid() = id);
 
+DROP POLICY IF EXISTS "Users can update their own profile" ON public.profiles;
 CREATE POLICY "Users can update their own profile" ON public.profiles
   FOR UPDATE USING (auth.uid() = id);
 
+DROP POLICY IF EXISTS "Users can insert their own profile" ON public.profiles;
 CREATE POLICY "Users can insert their own profile" ON public.profiles
   FOR INSERT WITH CHECK (auth.uid() = id);
 
 -- Farms policies
+DROP POLICY IF EXISTS "Users can manage their own farms" ON public.farms;
 CREATE POLICY "Users can manage their own farms" ON public.farms
   FOR ALL USING (auth.uid() = user_id);
 
+-- Fields policies
+DROP POLICY IF EXISTS "Users can manage their own fields" ON public.fields;
+CREATE POLICY "Users can manage their own fields" ON public.fields
+  FOR ALL USING (auth.uid() = user_id);
+
 -- Crops policies
+DROP POLICY IF EXISTS "Users can manage their own crops" ON public.crops;
 CREATE POLICY "Users can manage their own crops" ON public.crops
   FOR ALL USING (auth.uid() = user_id);
 
 -- Plant scans policies
+DROP POLICY IF EXISTS "Users can manage their own plant scans" ON public.plant_scans;
 CREATE POLICY "Users can manage their own plant scans" ON public.plant_scans
   FOR ALL USING (auth.uid() = user_id);
 
 -- Farm activities policies
+DROP POLICY IF EXISTS "Users can manage their own farm activities" ON public.farm_activities;
 CREATE POLICY "Users can manage their own farm activities" ON public.farm_activities
   FOR ALL USING (auth.uid() = user_id);
 
 -- AI Conversations policies
+DROP POLICY IF EXISTS "Users can manage their own AI conversations" ON public.ai_conversations;
 CREATE POLICY "Users can manage their own AI conversations" ON public.ai_conversations
   FOR ALL USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can manage their own AI messages" ON public.ai_messages;
 CREATE POLICY "Users can manage their own AI messages" ON public.ai_messages
   FOR ALL USING (
     EXISTS (
@@ -249,20 +290,30 @@ CREATE POLICY "Users can manage their own AI messages" ON public.ai_messages
   );
 
 -- Notifications policies
+DROP POLICY IF EXISTS "Users can manage their own notifications" ON public.notifications;
 CREATE POLICY "Users can manage their own notifications" ON public.notifications
   FOR ALL USING (auth.uid() = user_id);
 
--- Knowledge base (Pests, Diseases, Crop Knowledge) are readable by all authenticated users
+-- Sensors policies
+DROP POLICY IF EXISTS "Users can manage their own sensors" ON public.sensors;
+CREATE POLICY "Users can manage their own sensors" ON public.sensors
+  FOR ALL USING (auth.uid() = user_id);
+
+-- Knowledge base (Pests, Diseases, Crop Knowledge) are readable by all users
+DROP POLICY IF EXISTS "Public read access for pests knowledge" ON public.pests;
 CREATE POLICY "Public read access for pests knowledge" ON public.pests
   FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Public read access for diseases knowledge" ON public.diseases;
 CREATE POLICY "Public read access for diseases knowledge" ON public.diseases
   FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Public read access for crop knowledge" ON public.crop_knowledge;
 CREATE POLICY "Public read access for crop knowledge" ON public.crop_knowledge
   FOR SELECT USING (true);
 
 -- Admin write policies for knowledge tables
+DROP POLICY IF EXISTS "Admins can manage pests knowledge" ON public.pests;
 CREATE POLICY "Admins can manage pests knowledge" ON public.pests
   FOR ALL USING (
     EXISTS (
@@ -271,6 +322,7 @@ CREATE POLICY "Admins can manage pests knowledge" ON public.pests
     )
   );
 
+DROP POLICY IF EXISTS "Admins can manage diseases knowledge" ON public.diseases;
 CREATE POLICY "Admins can manage diseases knowledge" ON public.diseases
   FOR ALL USING (
     EXISTS (
@@ -279,6 +331,7 @@ CREATE POLICY "Admins can manage diseases knowledge" ON public.diseases
     )
   );
 
+DROP POLICY IF EXISTS "Admins can manage crop knowledge" ON public.crop_knowledge;
 CREATE POLICY "Admins can manage crop knowledge" ON public.crop_knowledge
   FOR ALL USING (
     EXISTS (
@@ -289,7 +342,7 @@ CREATE POLICY "Admins can manage crop knowledge" ON public.crop_knowledge
 
 -- ====================================================================
 -- AUTOMATIC USER PROFILE TRIGGER
--- Triggered whenever a new user signs up in Supabase Auth
+-- Auto creates a profile and default farm when a farmer signs up
 -- ====================================================================
 
 CREATE OR REPLACE FUNCTION public.handle_new_user()
@@ -305,7 +358,6 @@ BEGIN
   )
   ON CONFLICT (id) DO NOTHING;
 
-  -- Create initial sample farm for quick start
   INSERT INTO public.farms (user_id, name, location, district, size_hectares, main_crops, soil_type, irrigation_method)
   VALUES (
     new.id,
@@ -328,10 +380,8 @@ CREATE TRIGGER on_auth_user_created
   FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
 
 -- ====================================================================
--- STORAGE BUCKETS (Run in Supabase Storage or Dashboard)
--- 1. plant-images (Plant scans and symptoms photos)
--- 2. profile-images (Farmer avatar photographs)
--- 3. farm-images (Field plots and crop variety imagery)
+-- STORAGE BUCKETS
+-- Public read, authenticated write for crop diagnostic scans & profile
 -- ====================================================================
 
 INSERT INTO storage.buckets (id, name, public)
@@ -341,23 +391,38 @@ VALUES
   ('farm-images', 'farm-images', true)
 ON CONFLICT (id) DO NOTHING;
 
--- Storage RLS policies for authenticated users
+DROP POLICY IF EXISTS "Allow authenticated users to upload plant images" ON storage.objects;
 CREATE POLICY "Allow authenticated users to upload plant images"
 ON storage.objects FOR INSERT
 TO authenticated
-WITH CHECK (bucket_id = 'plant-images' AND auth.uid()::text = (storage.foldername(name))[1]);
+WITH CHECK (bucket_id = 'plant-images');
 
+DROP POLICY IF EXISTS "Allow public view of plant images" ON storage.objects;
 CREATE POLICY "Allow public view of plant images"
 ON storage.objects FOR SELECT
 TO public
 USING (bucket_id = 'plant-images');
 
+DROP POLICY IF EXISTS "Allow authenticated users to upload profile images" ON storage.objects;
 CREATE POLICY "Allow authenticated users to upload profile images"
 ON storage.objects FOR INSERT
 TO authenticated
-WITH CHECK (bucket_id = 'profile-images' AND auth.uid()::text = (storage.foldername(name))[1]);
+WITH CHECK (bucket_id = 'profile-images');
 
+DROP POLICY IF EXISTS "Allow public view of profile images" ON storage.objects;
 CREATE POLICY "Allow public view of profile images"
 ON storage.objects FOR SELECT
 TO public
 USING (bucket_id = 'profile-images');
+
+DROP POLICY IF EXISTS "Allow authenticated users to upload farm images" ON storage.objects;
+CREATE POLICY "Allow authenticated users to upload farm images"
+ON storage.objects FOR INSERT
+TO authenticated
+WITH CHECK (bucket_id = 'farm-images');
+
+DROP POLICY IF EXISTS "Allow public view of farm images" ON storage.objects;
+CREATE POLICY "Allow public view of farm images"
+ON storage.objects FOR SELECT
+TO public
+USING (bucket_id = 'farm-images');

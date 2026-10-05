@@ -20,10 +20,12 @@ import {
   Sun,
   Moon,
   Monitor,
+  Palette,
 } from 'lucide-react';
 import { UserProfile, Language, ThemeMode } from '../types';
 import { StorageService } from '../services/storageService';
 import { SupabaseService } from '../services/supabase';
+import { ThemeService, ACCENT_THEMES, ColorAccent } from '../services/themeService';
 import { SupabaseSetupGuideModal } from '../components/modals/SupabaseSetupGuideModal';
 
 interface SettingsViewProps {
@@ -36,6 +38,7 @@ interface SettingsViewProps {
   onResetData: () => void;
   onWipeData: () => void;
   onOpenAuth: () => void;
+  onSignOut?: () => void;
   onNavigate?: (tab: string) => void;
 }
 
@@ -49,6 +52,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   onResetData,
   onWipeData,
   onOpenAuth,
+  onSignOut,
   onNavigate,
 }) => {
   const currentSupabase = SupabaseService.getConfig();
@@ -56,6 +60,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   const [sbSaved, setSbSaved] = useState(false);
   const [exportNotice, setExportNotice] = useState(false);
   const [guideOpen, setGuideOpen] = useState(false);
+  const [accent, setAccent] = useState<ColorAccent>(ThemeService.getColorAccent());
+
+  const handleSelectAccent = (newAccent: ColorAccent) => {
+    setAccent(newAccent);
+    ThemeService.setColorAccent(newAccent);
+  };
 
   const handleSaveSupabaseConfig = (e: React.FormEvent) => {
     e.preventDefault();
@@ -147,6 +157,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             >
               Switch Account
             </button>
+            {onSignOut && (
+              <button
+                onClick={onSignOut}
+                className="px-3.5 py-2 bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-rose-700 dark:text-rose-300 rounded-xl text-xs font-bold transition-colors border border-rose-200 dark:border-rose-900"
+              >
+                Log Out
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -208,6 +226,59 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 <div className="text-sm font-heading font-bold">{item.title}</div>
                 <div className="text-[11px] text-stone-500 dark:text-stone-400 font-normal mt-0.5 leading-snug">
                   {item.desc}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* AGRICULTURAL COLOR PALETTES / THEMES */}
+      <div className="bg-white dark:bg-stone-900 p-6 rounded-3xl border border-stone-200/90 dark:border-stone-800 shadow-xs space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="font-heading font-bold text-base text-stone-900 dark:text-stone-100 flex items-center space-x-2">
+            <Palette className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span>Farm Theme Colors & Visual Accents</span>
+          </h3>
+          <span className="text-xs px-2.5 py-1 bg-stone-100 dark:bg-stone-800 rounded-full text-stone-600 dark:text-stone-300 font-bold capitalize">
+            Active: {accent}
+          </span>
+        </div>
+        <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
+          Personalize the look of Agrifarm with natural agricultural color palettes inspired by crops, soils, and sunlight.
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
+          {ACCENT_THEMES.map((opt) => {
+            const isSelected = accent === opt.id;
+            return (
+              <button
+                key={opt.id}
+                onClick={() => handleSelectAccent(opt.id)}
+                className={`p-3.5 rounded-2xl border text-left transition-all relative flex items-start space-x-3 ${
+                  isSelected
+                    ? 'border-stone-900 dark:border-white bg-stone-50 dark:bg-stone-800/80 shadow-sm ring-2 ring-emerald-500/20'
+                    : 'border-stone-200 dark:border-stone-800 hover:bg-stone-50 dark:hover:bg-stone-800/50'
+                }`}
+              >
+                <div
+                  className="w-8 h-8 rounded-xl shrink-0 flex items-center justify-center text-white shadow-sm font-bold text-xs"
+                  style={{ backgroundColor: opt.dotColor }}
+                >
+                  {isSelected && <CheckCircle2 className="w-4 h-4" />}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="text-xs font-heading font-bold text-stone-900 dark:text-stone-100 flex items-center justify-between">
+                    <span>{opt.name}</span>
+                    {isSelected && (
+                      <span className="text-[10px] uppercase tracking-wider font-extrabold text-emerald-600 dark:text-emerald-400">
+                        Selected
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-[11px] text-stone-500 dark:text-stone-400 leading-snug line-clamp-2 mt-0.5">
+                    {opt.description}
+                  </div>
                 </div>
               </button>
             );

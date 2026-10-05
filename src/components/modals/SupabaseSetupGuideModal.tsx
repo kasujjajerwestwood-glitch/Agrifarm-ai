@@ -360,6 +360,49 @@ export const SupabaseSetupGuideModal: React.FC<SupabaseSetupGuideModalProps> = (
                   </div>
                 </div>
               </div>
+
+              <div className="p-4 rounded-2xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200 dark:border-stone-800 flex items-start space-x-3">
+                <span className="w-6 h-6 rounded-full bg-emerald-700 text-white flex items-center justify-center font-bold shrink-0 text-xs">
+                  4
+                </span>
+                <div>
+                  <div className="font-bold text-stone-900 dark:text-stone-100">
+                    Netlify Deployment & Environment Variables
+                  </div>
+                  <div className="text-stone-500 dark:text-stone-400 mt-1 leading-relaxed space-y-1">
+                    <p>In your Netlify Site dashboard, go to <strong>Site configuration &rarr; Environment variables</strong> and add:</p>
+                    <code className="block p-2 bg-stone-900 text-emerald-300 rounded-lg text-[11px] font-mono select-all">
+                      VITE_SUPABASE_URL=https://your-project.supabase.co<br/>
+                      VITE_SUPABASE_ANON_KEY=your-anon-key-here<br/>
+                      GEMINI_API_KEY=your-gemini-key-here
+                    </code>
+                    <p className="text-[11px] text-stone-400">Trigger a new deploy on Netlify once added to apply the variables.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200 dark:border-stone-800 flex items-start space-x-3">
+                <span className="w-6 h-6 rounded-full bg-emerald-700 text-white flex items-center justify-center font-bold shrink-0 text-xs">
+                  5
+                </span>
+                <div>
+                  <div className="font-bold text-stone-900 dark:text-stone-100">
+                    VS Code & GitHub Workflow
+                  </div>
+                  <div className="text-stone-500 dark:text-stone-400 mt-1 leading-relaxed space-y-1">
+                    <p>To run or edit in VS Code and push changes to GitHub:</p>
+                    <code className="block p-2 bg-stone-900 text-stone-200 rounded-lg text-[11px] font-mono select-all">
+                      # In VS Code terminal:<br/>
+                      npm install<br/>
+                      npm run dev<br/>
+                      # To commit & push to GitHub:<br/>
+                      git add .<br/>
+                      git commit -m "feat: agrifarm mobile polish and supabase"<br/>
+                      git push origin main
+                    </code>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>
